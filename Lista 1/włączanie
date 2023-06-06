@@ -1,0 +1,2 @@
+gcc SzukanieWzorca.c
+./a.out

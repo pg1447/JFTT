@@ -1,0 +1,3 @@
+flex $1
+gcc lex.yy.c my_stack.c -lfl
+./a.out

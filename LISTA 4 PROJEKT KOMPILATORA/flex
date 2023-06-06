@@ -1,0 +1,71 @@
+%option yylineno
+
+%{
+	int yywrap(void);
+	int lex(void);
+	#include <stdio.h>
+	#include "bison.tab.h"
+%}
+
+%x 					comment
+
+pidentifier			[_a-z]+
+whitespace			[ \r\t\v\f]
+linefeed			\n
+number				[0-9]+
+
+%%
+
+\[				BEGIN(comment);
+<comment>\]		BEGIN(INITIAL);
+<comment>.			;
+<comment>\n 		;
+"DECLARE" 			return _declare;
+"BEGIN"				return _begin;
+"END" 				return _end;
+"IF" 				return _if;
+"THEN" 				return _then;
+"ELSE"				return _else;
+"ENDIF" 			return _endif;
+"WHILE" 			return _while;
+"DO" 				return _do;
+"ENDWHILE" 			return _endwhile;
+"REPEAT"			return _repeat;
+"UNTIL"				return _until;
+"FOR" 				return _for;
+"FROM" 				return _from;
+"TO" 				return _to;
+"DOWNTO" 			return _downto;
+"ENDFOR" 			return _endfor;
+"READ" 				return _read;
+"WRITE" 			return _write;
+
+","			return _zmi;
+";"			return _sre;
+":="		return _prz;
+":"			return _odd;
+
+"+"			return _dod;
+"-"			return _ode;
+"*"			return _mno;
+"/"			return _dzi;
+"%"			return _mod;
+
+"="			return _row;
+"!="		return _roz;
+"<"			return _mni;
+">"			return _wie;
+"<="		return _nwi;
+">="		return _nmn;
+"("			return _na0;
+")"			return _na1;
+
+
+{number}		{yylval.id = strdup(yytext); return number;}
+{pidentifier}		{yylval.id = strdup(yytext); return pidentifier;}
+{linefeed}		;
+{whitespace}	;
+
+
+%%
+int yywrap(void){ return 1;}
